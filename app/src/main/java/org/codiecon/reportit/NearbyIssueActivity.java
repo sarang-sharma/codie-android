@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -68,15 +69,18 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
 
 
-    private List<ReportedIssue> populate(){
+    /*private List<ReportedIssue> populate(){
         List<ReportedIssue> issues = new ArrayList<>();
         for(int i=0; i<10; i++){
             ReportedIssue issue = new ReportedIssue();
-            issue.setTitle("Title " + i);
+            issue.setTitle("Tree Fallen on road");
+            issue.setImages(Arrays.asList(R.drawable.tree_fallen_1, R.drawable.tree_fallen_2, R.drawable.tree_fallen_3));
+            issue.setTags(Arrays.asList("road", "block", "traffic"));
+            issue.setLocation("HSR Sector " + i);
             issues.add(issue);
         }
         return issues;
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
