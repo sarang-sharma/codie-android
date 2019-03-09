@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.auth.SharedPrefManager;
+import org.codiecon.reportit.constant.SystemConstant;
 import org.codiecon.reportit.helper.FileUtils;
 import org.codiecon.reportit.models.ReportedIssue;
 import org.codiecon.reportit.models.response.ReportedIssueResponse;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -94,7 +96,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("All Issues");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.ic_back_arrow);
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.ic_back_arrow);
         assert upArrow != null;
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.colorWhite), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -113,13 +115,13 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
         ConnectionManager.instance()
             .create(IssueService.class)
-            .getAll(0, 10).enqueue(new Callback<Wrapper<List<ReportedIssueResponse>>>(){
+            .getAll(0, 10).enqueue(new Callback<Wrapper<List<ReportedIssueResponse>>>() {
 
             @Override
             public void onResponse(Call<Wrapper<List<ReportedIssueResponse>>> call, Response<Wrapper<List<ReportedIssueResponse>>> response) {
                 List<ReportedIssue> issues = new ArrayList<>();
-                if(response != null && response.body() != null){
-                    for(ReportedIssueResponse item : response.body().getContent()){
+                if (response != null && response.body() != null) {
+                    for (ReportedIssueResponse item : response.body().getContent()) {
                         ReportedIssue issue = new ReportedIssue();
                         issue.setId(item.getId());
                         issue.setTitle(item.getTitle());
@@ -137,7 +139,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Wrapper<List<ReportedIssueResponse>>> call, Throwable t) {
-                Log.e( "jkfsadkjf", t.toString());
+                Log.e("jkfsadkjf", t.toString());
             }
         });
     }
@@ -161,29 +163,26 @@ public class NearbyIssueActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_image_upload) {
             // Toast.makeText(getApplicationContext(),"some",Toast.LENGTH_LONG).show();
-            if(!requestStoragePermission()) {
+            if (!requestStoragePermission()) {
                 Toast.makeText(this, "Permission is not granted !!!",
-                        Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
                 return true;
-
             }
 
-            if(haveNetwork()) {
+            if (haveNetwork()) {
                 showFileChooser();
 
-            }else if(!haveNetwork()) {
+            } else if (!haveNetwork()) {
                 Snackbar snackbar = Snackbar
-                        .make(linearLayout, "Internet not available", Snackbar.LENGTH_LONG);
+                    .make(linearLayout, "Internet not available", Snackbar.LENGTH_LONG);
                 snackbar.setDuration(5000).show();
-                //  Toast.makeText(getApplicationContext(),"Internet not available",Toast.LENGTH_LONG).show();
             }
             return true;
         }
 
-        if(id == R.id.action_logout)
-        {
+        if (id == R.id.action_logout) {
             SharedPrefManager.getInstance(cReference.get()).logout();
-            Intent intent = new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -192,7 +191,6 @@ public class NearbyIssueActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private void showFileChooser() {
@@ -204,42 +202,38 @@ public class NearbyIssueActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         List<String> imagePathList = new ArrayList<>();
 
         try {
             // When an Image is picked
-            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                    && null != data) {
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
                 // Get the Image from data
 
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 imagesEncodedList = new ArrayList<String>();
-                if(data.getData()!=null){
-
-                    Uri mImageUri=data.getData();
+                if (data.getData() != null) {
+                    Uri mImageUri = data.getData();
 
                     // Get the cursor
-                    Cursor cursor = getContentResolver().query(mImageUri,
-                            filePathColumn, null, null, null);
+                    Cursor cursor = getContentResolver()
+                        .query(mImageUri, filePathColumn, null, null, null);
+
                     // Move to first row
                     cursor.moveToFirst();
 
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    imageEncoded  = cursor.getString(columnIndex);
+                    imageEncoded = cursor.getString(columnIndex);
                     cursor.close();
-                    imagePathList.add(FileUtils.getPath(this,mImageUri));
+                    imagePathList.add(FileUtils.getPath(this, mImageUri));
                     Log.d("single", imagePathList.toString());
-
                 } else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
                         ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
 
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
                             ClipData.Item item = mClipData.getItemAt(i);
                             Uri uri = item.getUri();
                             mArrayUri.add(uri);
@@ -249,15 +243,13 @@ public class NearbyIssueActivity extends AppCompatActivity {
                             cursor.moveToFirst();
 
                             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            imageEncoded  = cursor.getString(columnIndex);
+                            imageEncoded = cursor.getString(columnIndex);
                             imagesEncodedList.add(imageEncoded);
                             cursor.close();
-
                         }
                         Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
-                        for (int i=0;i <= mArrayUri.size();i++)
-                        {
-                            imagePathList.add(FileUtils.getPath(this,mArrayUri.get(i)));
+                        for (int i = 0; i <= mArrayUri.size(); i++) {
+                            imagePathList.add(FileUtils.getPath(this, mArrayUri.get(i)));
                             Log.d("single1", imagePathList.toString());
                         }
                         Log.d("multiple", imagePathList.toString());
@@ -265,57 +257,35 @@ public class NearbyIssueActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(this, "You haven't picked Image",
-                        Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-
             Toast.makeText(this, "Ss", Toast.LENGTH_LONG)
-                    .show();
+                .show();
         }
-
         super.onActivityResult(requestCode, resultCode, data);
-
-        fileNames = new ArrayList<>();
-
-        for (String imagePath : imagePathList) {
-            uploadMultipart(imagePath);
-        }
-
-
-        Log.d("thissss",fileNames.size()+"");
-
-
-        if(fileNames.size() != 0 && fileNames.get(0) != null) {
-         //Toast.makeText(getApplicationContext(),"some image not upload",Toast.LENGTH_LONG).show();
-            Log.d("this","iscalled");
-            Intent intent = new Intent(getApplicationContext(),UploadIssueActivity.class);
-            intent.putStringArrayListExtra("images",fileNames);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-        }
-
-
-
-
+        uploadMultipart(imagePathList);
     }
 
 
-
-
-    private void uploadMultipart(final String imagePath) {
-
-
-        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, "http://192.168.1.5:8080/backend/issue/uploadFile",
-                new com.android.volley.Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        fileNames.add(response);
-                        Log.d("Response", response);
-
-
+    private void uploadMultipart(final List<String> imagePaths) {
+        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, SystemConstant.URI + "issue/uploadFile",
+            new com.android.volley.Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("upload response", response);
+                    if (response != null) {
+                        Intent intent = new Intent(getApplicationContext(), UploadIssueActivity.class);
+                        ArrayList<String> images = new ArrayList<>();
+                        for(String url : response.split(",")){
+                            images.add(url);
+                        }
+                        intent.putStringArrayListExtra("images", images);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
-                }, new com.android.volley.Response.ErrorListener() {
+                }
+            }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(com.android.volley.error.VolleyError error) {
                 //mView.dismiss();
@@ -323,32 +293,26 @@ public class NearbyIssueActivity extends AppCompatActivity {
             }
         });
 
-
-        smr.addFile("file", imagePath);
-
-        Log.d("s",smr+"");
+        for(String path : imagePaths){
+            smr.addFile(path, path);
+        }
         MyApplication.getInstance().addToRequestQueue(smr);
-        Log.d("s",smr+"");
-
     }
 
 
-
-    private boolean haveNetwork(){
-        boolean have_WIFI=false;
-        boolean have_MOBILE_DATA= false;
+    private boolean haveNetwork() {
+        boolean have_WIFI = false;
+        boolean have_MOBILE_DATA = false;
 
         connectivityManager = (ConnectivityManager) cReference.get().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] networkInfos= connectivityManager.getAllNetworkInfo();
+        NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
 
-
-        for(NetworkInfo info:networkInfos)
-        {
-            if(info.getTypeName().equalsIgnoreCase("WIFI"))
-                if(info.isConnected())
+        for (NetworkInfo info : networkInfos) {
+            if (info.getTypeName().equalsIgnoreCase("WIFI"))
+                if (info.isConnected())
                     have_WIFI = true;
-            if(info.getTypeName().equalsIgnoreCase("MOBILE"))
-                if(info.isConnected())
+            if (info.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (info.isConnected())
                     have_MOBILE_DATA = true;
         }
         return have_MOBILE_DATA || have_WIFI;
@@ -357,7 +321,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
     private boolean requestStoragePermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Log.d("radhe1","method");
+            Log.d("radhe1", "method");
             return true;
         }
 
@@ -372,7 +336,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
         //And finally ask for the permission
         ActivityCompat.requestPermissions(NearbyIssueActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Log.d("radhe1","method");
+            Log.d("radhe1", "method");
             return true;
         }
         return false;
@@ -385,7 +349,6 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
         //Checking the request code of our request
         if (requestCode == STORAGE_PERMISSION_CODE) {
-
             //If permission is granted
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Displaying a toast

@@ -1,7 +1,5 @@
 package org.codiecon.reportit.models.response;
 
-import java.util.List;
-
 public class Wrapper<T> {
 
     public T content;

@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/back_ground"
         app:titleTextColor="@android:color/white"
         app:theme="@style/ThemeOverlay.AppCompat"
         />
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/title"
                 android:layout_marginTop="10dp"
-                android:hint="Title"
+                android:hint="describe issue in one line"
                 android:maxLength="100"
                 android:layout_below="@+id/textView6"
                 android:layout_marginStart="10dp"
@@ -72,7 +72,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:maxLength="450"
-                android:hint="Description"
+                android:hint="add description"
 
                 android:textSize="20sp" />
 
@@ -96,7 +96,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:maxLength="250"
-                android:hint="Put Tag"
+                android:hint="Add tags"
                 android:textSize="20sp"
               />
 
@@ -123,8 +123,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
-                android:background="@color/bg"
-                android:textColor="@color/white"
+                android:background="@color/back_ground"
+                android:textColor="@color/grey_300"
                 android:layout_alignParentBottom="true"
                 android:id="@+id/save"
                 android:text="SAVE"
