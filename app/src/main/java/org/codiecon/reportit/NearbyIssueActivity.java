@@ -121,6 +121,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
                 if(response != null && response.body() != null){
                     for(ReportedIssueResponse item : response.body().getContent()){
                         ReportedIssue issue = new ReportedIssue();
+                        issue.setId(item.getId());
                         issue.setTitle(item.getTitle());
                         issue.setDescription(item.getDescription());
                         issue.setLocation(item.getAddress());

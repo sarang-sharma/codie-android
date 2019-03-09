@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import org.codiecon.reportit.R;
 import org.codiecon.reportit.models.ReportedIssue;
 import org.codiecon.reportit.outbound.IssueService;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdapter.IssueHolder> {
@@ -30,6 +33,8 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
     private Context _context;
 
     private List<ReportedIssue> issues;
+
+    DecimalFormat decimalFormat = new DecimalFormat(".#");
 
     public ReportedIssueAdapter(Context context, List<ReportedIssue> reportedIssues) {
         this._context = context;
@@ -52,6 +57,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             holder.title.setText(issue.getTitle());
             holder.location.setText(issue.getLocation());
             holder.viewPager.setAdapter(imageContainer);
+            holder.counter.setText(convertToText(issue.getVotes()));
             holder.reporter.setImageResource(R.drawable.character);
 
             holder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -79,14 +85,18 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             public void onClick(View v) {
                 ConnectionManager.instance()
                     .create(IssueService.class)
-                    .upvote(issue.getDescription()).enqueue(new Callback<Void>() {
+                    .upvote(issue.getId()).enqueue(new Callback<Long>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
+                    public void onResponse(Call<Long> call, Response<Long> response) {
+                        if(response.body() != null){
+                            holder.counter.setText(convertToText(response.body()));
+                            holder.downVotes.setEnabled(true);
+                            holder.upVotes.setEnabled(false);
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<Long> call, Throwable t) {
 
                     }
                 });
@@ -99,14 +109,19 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             public void onClick(View v) {
                 ConnectionManager.instance()
                     .create(IssueService.class)
-                    .downVote(issue.getDescription()).enqueue(new Callback<Void>() {
+                    .downVote(issue.getId()).enqueue(new Callback<Long>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
+                    public void onResponse(Call<Long> call, Response<Long> response) {
+                        Log.e("call request", call.toString());
+                        if(response.body() != null){
+                            holder.counter.setText(convertToText(response.body()));
+                            holder.downVotes.setEnabled(false);
+                            holder.upVotes.setEnabled(true);
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<Long> call, Throwable t) {
 
                     }
                 });
@@ -127,6 +142,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
         ViewPager viewPager;
         ImageView upVotes;
         ImageView downVotes;
+        TextView counter;
         LinearLayout slider_dots;
 
         public IssueHolder(View view) {
@@ -138,6 +154,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             this.upVotes = view.findViewById(R.id.iv_like);
             this.downVotes = view.findViewById(R.id.iv_unlike);
             this.viewPager = view.findViewById(R.id.image_container);
+            this.counter = view.findViewById(R.id.markCounter);
         }
     }
 
@@ -155,6 +172,17 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
         if (dots.length > 0) {
             dots[currentPage].setTextColor(Color.parseColor("#A2A2A2"));
         }
+    }
+
+    private String convertToText(long number) {
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+        Double tDouble = new BigDecimal(number)
+            .divide(new BigDecimal(1000))
+            .setScale(1, BigDecimal.ROUND_HALF_UP)
+            .doubleValue();
+        return new StringBuilder(String.valueOf(tDouble)).append("k").toString();
     }
 
 }

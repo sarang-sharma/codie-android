@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
     android:fitsSystemWindows="true"
-    android:background="@color/bg1"
+    android:background="@color/back_ground"
     android:id="@+id/coordinatorLayout"
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp">
@@ -22,29 +22,29 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_fmp_logo"
+                app:srcCompat="@drawable/logo"
                 android:contentDescription="@string/desc"
-                android:layout_marginStart="36dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="100dp" />
 
             <TextView
-                android:textStyle="bold"
-                android:textColor="@color/darkTextColor"
-                android:textSize="32sp"
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome Back,"
-                android:layout_marginStart="36dp"
                 android:layout_below="@+id/logo"
-                android:layout_marginTop="10dp"
-                />
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="7dp"
+                android:gravity="center"
+                android:text="Welcome Back,"
+                android:textColor="@color/darkTextColor"
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:textColor="@color/textColor"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -64,6 +64,7 @@
                 android:paddingStart="60dp"
                 android:inputType="textPersonName"
                 android:hint="Email"
+                android:textColor="@color/white"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="36dp"
                 android:layout_marginEnd="36dp"
@@ -97,8 +98,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_below="@+id/passWord"
-                android:background="@color/bg"
-                android:textColor="@color/white"
+                android:background="@color/login_button"
+                android:textColor="@color/grey_300"
                 android:text="Sign In"
                 android:layout_marginStart="26dp"
                 android:layout_marginEnd="26dp"
@@ -114,7 +115,7 @@
                 android:layout_below="@+id/SignIn"
                 android:text="Create Account"
                 android:textSize="18sp"
-                android:textColor="@color/textColor"
+                android:textColor="@color/darkTextColor"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 />

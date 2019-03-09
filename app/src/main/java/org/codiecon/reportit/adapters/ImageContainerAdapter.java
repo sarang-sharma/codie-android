@@ -2,14 +2,13 @@ package org.codiecon.reportit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+
 import org.codiecon.reportit.R;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class ImageContainerAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.image_slider, container, false);
         ImageView im_slider = (ImageView) view.findViewById(R.id.image_slider);
         Glide.with(activity.getApplicationContext())
-            .load(images.get(position).getBytes())
+            .load(images.get(position))
             .placeholder(R.mipmap.ic_launcher)
             .error(R.mipmap.ic_launcher)
             .into(im_slider);
