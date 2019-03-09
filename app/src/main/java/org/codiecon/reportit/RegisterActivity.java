@@ -29,6 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.codiecon.reportit.auth.SharedPrefManager;
+import org.codiecon.reportit.constant.SystemConstant;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -44,19 +45,19 @@ import androidx.core.content.ContextCompat;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
     private Button SignUp;
-    private EditText Username,Email,Password,Phone;
-    private String username,email,password,phone,refreshedToken;
-    private TextView Login,Error;
+    private EditText Username, Email, Password, Phone;
+    private String username, email, password, phone, refreshedToken;
+    private TextView Login, Error;
     private WeakReference<Context> cReference;
     private ProgressDialog waitDialog;
     private RelativeLayout coordinatorLayout;
     RequestQueue requestQueue;
-    private String locationUpdate,LocalityName;
+    private String locationUpdate, LocalityName;
+    private Double latitude, longitude;
     private LocationManager locationManager;
     private static final int STORAGE_PERMISSION_CODE = 123;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
+        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
     @Override
@@ -67,10 +68,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         requestQueue = Volley.newRequestQueue(cReference.get());
         locationUpdate = SharedPrefManager.getInstance(cReference.get()).getUserLocation();
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        if(locationUpdate == null) {
+        if (locationUpdate == null) {
             requestStoragePermission();
             // getLocation();
-        }else {
+        } else {
             getLocation();
         }
         SignUp = findViewById(R.id.SignIn);
@@ -80,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Email = findViewById(R.id.email);
         Login = findViewById(R.id.login);
         Error = findViewById(R.id.error);
-        coordinatorLayout =  findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         SignUp.setOnClickListener(this);
         Login.setOnClickListener(this);
         waitDialog = new ProgressDialog(this);
@@ -92,67 +93,59 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
 
-        if(v.getId()== R.id.SignIn)
-        {
+        if (v.getId() == R.id.SignIn) {
 
-            username=Username.getText().toString();
+            username = Username.getText().toString();
             if (username == null || username.isEmpty()) {
                 Error.setText("Username cannot be empty");
                 return;
-            }else
-            {
+            } else {
                 Error.setText("");
             }
 
 
-            email=Email.getText().toString();
+            email = Email.getText().toString();
             if (email == null || email.isEmpty()) {
                 Error.setText("email cannot be empty");
                 return;
-            }else
-            {
+            } else {
                 Error.setText("");
             }
 
             if (!validateEmail(email)) {
                 Error.setText("invalid email addresss");
                 return;
-            }else
-            {
+            } else {
                 Error.setText("");
             }
 
-            password=Password.getText().toString();
+            password = Password.getText().toString();
             if (password == null || password.isEmpty()) {
                 Error.setText("Password cannot be empty");
                 return;
-            }else
-            {
+            } else {
                 Error.setText("");
             }
 
 
-            phone=Phone.getText().toString();
+            phone = Phone.getText().toString();
 
             if (phone == null || phone.isEmpty()) {
                 Error.setText("Mobile Number cannot be empty");
                 return;
-            }else
-            {
+            } else {
                 Error.setText("");
             }
 
-            if(phone.length()!=10)
-            {
+            if (phone.length() != 10) {
                 Error.setText("Mobile Number invalid");
                 return;
-            }else{
+            } else {
                 Error.setText("");
             }
 
 
-            if(haveNetwork())
-            {
+            if (haveNetwork()) {
 
                 if (refreshedToken == null) {
                     refreshedToken = FirebaseInstanceId.getInstance().getToken();
@@ -163,17 +156,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 waitDialog.setMessage("Signing up...");
                 waitDialog.show();
                 RegisterUser();
-            }else if(!haveNetwork())
-            {
+            } else if (!haveNetwork()) {
                 Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Internet not available", Snackbar.LENGTH_LONG);
+                    .make(coordinatorLayout, "Internet not available", Snackbar.LENGTH_LONG);
                 snackbar.setDuration(5000).show();
                 //Toast.makeText(getApplicationContext(),"Internet not available",Toast.LENGTH_LONG).show();
             }
 
-        }
-        else if(v.getId() == R.id.login)
-        {
+        } else if (v.getId() == R.id.login) {
             Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -199,53 +189,44 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private void RegisterUser() {
-
-        HashMap<String, String> params = new HashMap<String, String>();
+        HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("email", email);
         params.put("username", username);
         params.put("password", password);
         params.put("phoneNo", phone);
+        params.put("latitude", latitude);
+        params.put("longitude", longitude);
         params.put("location", LocalityName);
         params.put("fcm_token", refreshedToken);
 
-        JSONObject s= new JSONObject(params);
-        Log.d("ss",s+"");
-
-
-
-        JsonObjectRequest request_json = new JsonObjectRequest("http://e4e4bb84.ngrok.io/backend/user/signup", new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            waitDialog.dismiss();
-                            Log.d("response", response+"");
-                            if(response.getString("email") != null)
-                            {
-
-                                Intent intent1=new Intent(RegisterActivity.this,LoginActivity.class);
-                                startActivity(intent1);
-                            }else {
-
-                                Error.setText("username or password wrong");
-                            }
-
-
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        JSONObject s = new JSONObject(params);
+        Log.d("ss", s + "");
+        JsonObjectRequest request_json = new JsonObjectRequest(SystemConstant.URI + "user/signup", new JSONObject(params),
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        waitDialog.dismiss();
+                        Log.d("response", response + "");
+                        if (response.getString("email") != null) {
+                            Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent1);
+                        } else {
+                            Error.setText("username or password wrong");
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+                }
+            }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(com.android.volley.error.VolleyError error) {
-                if(error.getMessage()==null) {
+                if (error.getMessage() == null) {
                     waitDialog.dismiss();
                     // Toast.makeText(getApplicationContext(), "Server down try after some time", Toast.LENGTH_LONG).show();
                     Error.setText("No Internet Connection Or Some Network Issue");
-                }else {
+                } else {
                     waitDialog.dismiss();
                     // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                     Error.setText("No Internet Connection Or Some Network Issue");
@@ -253,30 +234,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
 
         });
-
-
-
         requestQueue.add(request_json);
-
     }
 
 
-
-    private boolean haveNetwork(){
-        boolean have_WIFI=false;
-        boolean have_MOBILE_DATA= false;
+    private boolean haveNetwork() {
+        boolean have_WIFI = false;
+        boolean have_MOBILE_DATA = false;
 
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo[] networkInfos= connectivityManager.getAllNetworkInfo();
+        NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
 
 
-        for(NetworkInfo info:networkInfos)
-        {
-            if(info.getTypeName().equalsIgnoreCase("WIFI"))
-                if(info.isConnected())
+        for (NetworkInfo info : networkInfos) {
+            if (info.getTypeName().equalsIgnoreCase("WIFI"))
+                if (info.isConnected())
                     have_WIFI = true;
-            if(info.getTypeName().equalsIgnoreCase("MOBILE"))
-                if(info.isConnected())
+            if (info.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (info.isConnected())
                     have_MOBILE_DATA = true;
         }
         return have_MOBILE_DATA || have_WIFI;
@@ -284,7 +259,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void requestStoragePermission() {
-        Log.d("radhe","method");
+        Log.d("radhe", "method");
 
         if (ContextCompat.checkSelfPermission(cReference.get(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("radhe1", "method");
@@ -294,12 +269,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             //If the user has denied the permission previously your code will come to this block
             //Here you can explain why you need this permission
             //Explain here why you need this permission
-            Log.d("radhe2","method");
+            Log.d("radhe2", "method");
         }
         //And finally ask for the permission
         ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, STORAGE_PERMISSION_CODE);
     }
-
 
 
     @Override
@@ -314,11 +288,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(cReference.get(), "Permission granted now access the location", Toast.LENGTH_LONG).show();
                 String lPermission = "location_approved";
                 SharedPrefManager.getInstance(cReference.get())
-                        .userLocation(
-                                lPermission);
-
+                    .userLocation(lPermission);
                 getLocation();
-
             } else {
                 //Displaying another toast if permission is not granted
                 Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
@@ -328,20 +299,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
-
     private void getLocation() {
         try {
             locationManager = (LocationManager) cReference.get().getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 5, this);
-        }
-        catch(SecurityException e) {
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
-
-
     }
-
 
 
     @Override
@@ -357,15 +322,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses.size() > 0) {
                 LocalityName = addresses.get(0).getAddressLine(0);
-                Log.d("locality name",addresses.get(0).getAddressLine(0)+"");
-                System.out.println(addresses.get(0).getLocality());
+                latitude = addresses.get(0).getLatitude();
+                longitude = addresses.get(0).getLongitude();
+                Log.d("locality name", addresses.get(0).getAddressLine(0) + "");
+            } else {
+                Log.d("locality", "not found");
             }
-            else {
-                Log.d("locality","not found");
-            }
-        }catch(Exception e)
-        {
-            Log.d("locality",e.getMessage());
+        } catch (Exception e) {
+            Log.d("locality", e.getMessage());
         }
     }
 
