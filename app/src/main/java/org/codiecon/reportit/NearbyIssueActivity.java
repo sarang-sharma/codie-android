@@ -113,6 +113,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
                 List<ReportedIssue> issues = new ArrayList<>();
                 if(response != null && response.body() != null){
                     for(ReportedIssueResponse item : response.body()){
+                        Log.d("HTAG", response.body().toString());
                         ReportedIssue issue = new ReportedIssue();
                         issue.setTitle(item.getTitle());
                         issue.setDescription(item.getDescription());
