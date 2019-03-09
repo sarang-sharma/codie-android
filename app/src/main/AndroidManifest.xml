@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.codiecon.reportit">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -12,7 +13,6 @@
         android:label="@string/application"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/main" >
 
         <activity android:name=".NearbyIssueActivity">
@@ -37,6 +37,22 @@
         <activity android:name=".RegisterActivity">
 
         </activity>
+
+        <service
+            android:name=".service.FcmInstanceIdService"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.FcmMessagingService"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

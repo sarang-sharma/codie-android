@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_news"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/cover"
+        android:contentDescription="@string/desc"/>
+
+    <TextView
+        android:id="@+id/tv_news_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_news"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toLeftOf="@+id/tv_news_time"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="Trump signs order to roll back Obama-era climate policies"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_news_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_news"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="9:14 AM"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+
+</RelativeLayout>
