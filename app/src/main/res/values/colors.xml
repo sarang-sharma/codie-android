@@ -3,4 +3,28 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="Toolbar">#D81B60</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="dialog_enquire">#00FA9A</color>
+    <color name="button">#000000</color>
+    <color name="colorOffWhite">#c2c2c2</color>
+    <color name="dialog_back">#ff4d57</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen1">#f64c73</color>
+    <color name="bg_screen2">#20d2bb</color>
+    <color name="bg_screen3">#3395ff</color>
+    <color name="bg_screen4">#c873f4</color>
+    <color name="textColor">#9b9b9b</color>
+    <color name="darkTextColor">#4f4f51</color>
+    <color name="viewBg">#f1f5f8</color>
+    <color name="album_title">#4c4c4c</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#757575</color>
+    <color name="bg">#b0232e</color>
+    <color name="bg1">#f1f1f1</color>
+    <color name="grey_300">#8D9496</color>
+    <color name="button_pressed">#f1f1f1</color>
 </resources>

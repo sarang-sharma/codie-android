@@ -19,4 +19,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_list_issue">listIssue</string>
     <string name="title_activity_reported_issue">ReportedIssueActivity</string>
+    <string name="desc">Description</string>
 </resources>
