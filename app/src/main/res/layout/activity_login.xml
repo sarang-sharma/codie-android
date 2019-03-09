@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_fmp_logo"
+                app:srcCompat="@drawable/logo"
                 android:contentDescription="@string/desc"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="100dp" />

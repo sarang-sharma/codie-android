@@ -55,7 +55,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
             String title, message, img_url, click_action, num, largeIcon;
             int number;
 
-
             title = remoteMessage.getData().get("title");
             message = remoteMessage.getData().get("message");
             img_url = remoteMessage.getData().get("img_url");
