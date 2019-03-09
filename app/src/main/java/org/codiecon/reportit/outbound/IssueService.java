@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 public interface IssueService {
 
     @GET("issue/getAll")
-    Call<List<ReportedIssueResponse>> getAll();
+    Call<List<ReportedIssueResponse>> getAll(@Query("page") Integer page, @Query("size") Integer size);
 
     @POST("issue/save")
     Call<Void> save(@Body ReportIssueRequest request);
