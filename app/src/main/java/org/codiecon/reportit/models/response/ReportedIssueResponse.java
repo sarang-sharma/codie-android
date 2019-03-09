@@ -14,7 +14,7 @@ public class ReportedIssueResponse {
 
     private String address;
 
-    private List<byte[]> images;
+    private List<String> images;
 
     private long votes;
 
@@ -60,11 +60,11 @@ public class ReportedIssueResponse {
         this.address = address;
     }
 
-    public List<byte[]> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<byte[]> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

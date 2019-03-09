@@ -22,9 +22,9 @@ public class ImageContainerAdapter extends PagerAdapter {
     private Activity activity;
     private LayoutInflater layoutInflater;
 
-    private List<byte[]> images;
+    private List<String> images;
 
-    public ImageContainerAdapter(Activity activity, List<byte[]> images){
+    public ImageContainerAdapter(Activity activity, List<String> images){
         this.activity = activity;
         this.images = images;
     }
@@ -46,11 +46,10 @@ public class ImageContainerAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.image_slider, container, false);
         ImageView im_slider = (ImageView) view.findViewById(R.id.image_slider);
         Glide.with(activity.getApplicationContext())
-            .load(images.get(position))
+            .load(images.get(position).getBytes())
             .placeholder(R.mipmap.ic_launcher)
             .error(R.mipmap.ic_launcher)
             .into(im_slider);
-
         container.addView(view);
         return view;
     }
