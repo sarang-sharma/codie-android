@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:name="org.codiecon.reportit.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application"
@@ -16,6 +17,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/main" >
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
 
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -34,6 +40,7 @@
 
         </activity>
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".UploadIssueActivity"></activity>
 
         <activity android:name=".RegisterActivity"></activity>
 

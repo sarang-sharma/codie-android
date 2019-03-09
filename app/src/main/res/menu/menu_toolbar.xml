@@ -8,6 +8,12 @@
         app:showAsAction="ifRoom|collapseActionView"
         android:title="enquire" />
 
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_logout"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="enquire" />
+
 
 
 
