@@ -178,7 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         params.put("password", password);
 
 
-        JsonObjectRequest request_json = new JsonObjectRequest("http://192.168.1.5:8080/backend/user/login", new JSONObject(params),
+        JsonObjectRequest request_json = new JsonObjectRequest("http://10.177.68.119:8080/backend/user/login", new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
