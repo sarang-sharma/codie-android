@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
+import android.util.Log;
+
 import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.auth.SharedPrefManager;
 import org.codiecon.reportit.helper.FileUtils;
@@ -130,7 +132,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ReportedIssueResponse>> call, Throwable t) {
-
+                Log.e( "jkfsadkjf", t.toString());
             }
         });
     }
