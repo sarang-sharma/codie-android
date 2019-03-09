@@ -6,6 +6,7 @@ import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.models.ReportedIssue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,10 @@ public class NearbyIssueActivity extends AppCompatActivity {
         List<ReportedIssue> issues = new ArrayList<>();
         for(int i=0; i<10; i++){
             ReportedIssue issue = new ReportedIssue();
-            issue.setTitle("Title " + i);
+            issue.setTitle("Tree Fallen on road");
+            issue.setImages(Arrays.asList(R.drawable.tree_fallen_1, R.drawable.tree_fallen_2, R.drawable.tree_fallen_3));
+            issue.setTags(Arrays.asList("road", "block", "traffic"));
+            issue.setLocation("HSR Sector " + i);
             issues.add(issue);
         }
         return issues;

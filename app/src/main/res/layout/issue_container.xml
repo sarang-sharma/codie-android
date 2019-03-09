@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    card_view:cardElevation="10dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/reporter"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/character"
+                />
+
+            <LinearLayout
+                android:id="@+id/details"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/issue_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:text="@string/application"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/issue_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="bottom"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/application"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/middle_content_holder"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/image_container"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_below="@+id/header" />
+
+            <ImageView
+                android:id="@+id/iv_unlike"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/upvote"
+                android:layout_alignParentRight="true"
+                />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/slider_dots"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/middle_content_holder"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

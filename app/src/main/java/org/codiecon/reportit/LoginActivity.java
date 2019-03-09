@@ -55,13 +55,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button loginWithFacebook = (Button) findViewById(R.id.sign_in_with_facebook);
-        loginWithFacebook.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _loginWithFacebook();
-            }
-        });
+//        Button loginWithFacebook = (Button) findViewById(R.id.sign_in_with_facebook);
+//        loginWithFacebook.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                _loginWithFacebook();
+//            }
+//        });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);

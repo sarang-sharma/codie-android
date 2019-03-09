@@ -11,6 +11,8 @@ import com.squareup.picasso.Picasso;
 
 import org.codiecon.reportit.R;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
@@ -19,16 +21,16 @@ public class ImageContainerAdapter extends PagerAdapter {
     private Activity activity;
     private LayoutInflater layoutInflater;
 
-    private int[] images;
+    private List<Integer> images;
 
-    public ImageContainerAdapter(Activity activity, int[] images){
+    public ImageContainerAdapter(Activity activity, List<Integer> images){
         this.activity = activity;
         this.images = images;
     }
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -43,7 +45,7 @@ public class ImageContainerAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.image_slider, container, false);
         ImageView im_slider = (ImageView) view.findViewById(R.id.image_slider);
         Picasso.with(activity.getApplicationContext())
-            .load(images[position])
+            .load(images.get(position))
             .placeholder(R.mipmap.ic_launcher)
             .error(R.mipmap.ic_launcher)
             .into(im_slider);

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "755373582461",
+    "firebase_url": "https://report-it-cf4b0.firebaseio.com",
+    "project_id": "report-it-cf4b0",
+    "storage_bucket": "report-it-cf4b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755373582461:android:13d1089d0793be7e",
+        "android_client_info": {
+          "package_name": "org.codiecon.reportit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755373582461-tebuqf67skitkqaf668ksj18dj3mgqgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5amGeJnupzGXUF8SskKTMVTcl4bcVtE4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

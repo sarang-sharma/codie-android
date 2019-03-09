@@ -7,11 +7,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,39 +22,32 @@ import java.util.List;
 
 public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdapter.IssueHolder> {
 
-    private int page = 0;
     private Context _context;
 
-    private int[] images;
     private List<ReportedIssue> issues;
 
     public ReportedIssueAdapter(Context context, List<ReportedIssue> reportedIssues) {
         this._context = context;
         this.issues = reportedIssues;
-        this.images = new int[]{
-            R.drawable.character,
-            R.drawable.character,
-            R.drawable.character,
-            R.drawable.character,
-            R.drawable.character,
-            R.drawable.character
-        };
     }
 
     @NonNull
     @Override
     public ReportedIssueAdapter.IssueHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.image_container_layout, parent, false);
+            .inflate(R.layout.issue_container, parent, false);
         return new IssueHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ReportedIssueAdapter.IssueHolder holder, int position) {
-        ReportedIssue issue = this.issues.get(position);
+        final ReportedIssue issue = this.issues.get(position);
         if (issue != null) {
-            final ImageContainerAdapter imageContainer = new ImageContainerAdapter((Activity) _context, this.images);
+            final ImageContainerAdapter imageContainer = new ImageContainerAdapter((Activity) _context, issue.getImages());
+            holder.title.setText(issue.getTitle());
+            holder.location.setText(issue.getLocation());
             holder.viewPager.setAdapter(imageContainer);
+            holder.reporter.setImageResource(R.drawable.character);
 
             holder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -64,8 +57,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
 
                 @Override
                 public void onPageSelected(int position) {
-                    page = position;
-                    addBottomDots(position, holder.slider_dots);
+                    sliderDots(position, holder.slider_dots, issue.getImages().size());
                 }
 
                 @Override
@@ -73,7 +65,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
 
                 }
             });
-            addBottomDots(0, holder.slider_dots);
+            sliderDots(0, holder.slider_dots, this.issues.size());
         }
 
     }
@@ -84,18 +76,26 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
     }
 
     public static class IssueHolder extends RecyclerView.ViewHolder {
+        TextView title;
+        TextView location;
+        ImageView reporter;
         ViewPager viewPager;
+        TextView upVotes;
+        TextView downVotes;
         LinearLayout slider_dots;
 
         public IssueHolder(View view) {
             super(view);
+            this.title = view.findViewById(R.id.issue_title);
+            this.reporter = view.findViewById(R.id.reporter);
+            this.location = view.findViewById(R.id.issue_location);
             this.slider_dots = view.findViewById(R.id.slider_dots);
             this.viewPager = view.findViewById(R.id.image_container);
         }
     }
 
-    private void addBottomDots(int currentPage, LinearLayout slider_dots) {
-        TextView[] dots = new TextView[this.images.length];
+    private void sliderDots(int currentPage, LinearLayout slider_dots, int size) {
+        TextView[] dots = new TextView[size];
         slider_dots.removeAllViews();
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(_context);

@@ -10,6 +10,12 @@ public class ReportedIssue {
 
     private List<String> tags;
 
+    private List<Integer> images;
+
+    private String location;
+
+    private String reporter;
+
     public String getTitle() {
         return title;
     }
@@ -32,5 +38,29 @@ public class ReportedIssue {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public List<Integer> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Integer> images) {
+        this.images = images;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getReporter() {
+        return reporter;
+    }
+
+    public void setReporter(String reporter) {
+        this.reporter = reporter;
     }
 }
