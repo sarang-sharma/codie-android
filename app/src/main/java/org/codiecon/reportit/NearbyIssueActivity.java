@@ -19,6 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.request.SimpleMultiPartRequest;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.codiecon.reportit.adapters.ReportedIssueAdapter;
@@ -28,10 +31,11 @@ import org.codiecon.reportit.models.ReportedIssue;
 import org.codiecon.reportit.models.response.ReportedIssueResponse;
 import org.codiecon.reportit.models.response.Wrapper;
 import org.codiecon.reportit.outbound.IssueService;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -41,7 +45,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import id.zelory.compressor.Compressor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,11 +62,11 @@ public class NearbyIssueActivity extends AppCompatActivity {
     private static final int STORAGE_PERMISSION_CODE = 456;
     private int PICK_IMAGE_REQUEST = 1;
     private Uri filePath;
-    private String imagePath = "";
     private String path, filesize, mediaUpdate;
     private int FileSizeCheck;
     String imageEncoded;
     List<String> imagesEncodedList;
+    ArrayList<String> fileNames = new ArrayList<>();
 
 
 
@@ -89,7 +92,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //onBackPressed();
 
-        getSupportActionBar().setTitle("Feed");
+        getSupportActionBar().setTitle("All Issues");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Drawable upArrow =  ContextCompat.getDrawable(this, R.drawable.ic_back_arrow);
         assert upArrow != null;
@@ -176,6 +179,17 @@ public class NearbyIssueActivity extends AppCompatActivity {
             }
             return true;
         }
+
+        if(id == R.id.action_logout)
+        {
+            SharedPrefManager.getInstance(cReference.get()).logout();
+            Intent intent = new Intent(this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -194,6 +208,8 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        List<String> imagePathList = new ArrayList<>();
+
         try {
             // When an Image is picked
             if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
@@ -215,8 +231,8 @@ public class NearbyIssueActivity extends AppCompatActivity {
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     imageEncoded  = cursor.getString(columnIndex);
                     cursor.close();
-                    imagePath=FileUtils.getPath(this,mImageUri);
-                    Log.d("single",imagePath);
+                    imagePathList.add(FileUtils.getPath(this,mImageUri));
+                    Log.d("single", imagePathList.toString());
 
                 } else {
                     if (data.getClipData() != null) {
@@ -241,11 +257,10 @@ public class NearbyIssueActivity extends AppCompatActivity {
                         Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
                         for (int i=0;i <= mArrayUri.size();i++)
                         {
-                            imagePath+=FileUtils.getPath(this,mArrayUri.get(i));
-                            Log.d("single1",imagePath);
-                            imagePath = imagePath+",";
+                            imagePathList.add(FileUtils.getPath(this,mArrayUri.get(i)));
+                            Log.d("single1", imagePathList.toString());
                         }
-                        Log.d("multiple",imagePath);
+                        Log.d("multiple", imagePathList.toString());
                     }
                 }
             } else {
@@ -254,16 +269,68 @@ public class NearbyIssueActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
 
-            requestStoragePermission();
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Ss", Toast.LENGTH_LONG)
                     .show();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+
+        fileNames = new ArrayList<>();
+
+        for (String imagePath : imagePathList) {
+            uploadMultipart(imagePath);
+        }
+
+
+        Log.d("thissss",fileNames.size()+"");
+
+
+        if(fileNames.size() != 0 && fileNames.get(0) != null) {
+         //Toast.makeText(getApplicationContext(),"some image not upload",Toast.LENGTH_LONG).show();
+            Log.d("this","iscalled");
+            Intent intent = new Intent(getApplicationContext(),UploadIssueActivity.class);
+            intent.putStringArrayListExtra("images",fileNames);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+        }
+
+
+
+
     }
 
 
 
+
+    private void uploadMultipart(final String imagePath) {
+
+
+        SimpleMultiPartRequest smr = new SimpleMultiPartRequest(Request.Method.POST, "http://192.168.1.5:8080/backend/issue/uploadFile",
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        fileNames.add(response);
+                        Log.d("Response", response);
+
+
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(com.android.volley.error.VolleyError error) {
+                //mView.dismiss();
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        smr.addFile("file", imagePath);
+
+        Log.d("s",smr+"");
+        MyApplication.getInstance().addToRequestQueue(smr);
+        Log.d("s",smr+"");
+
+    }
 
 
 
