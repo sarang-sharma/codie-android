@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface IssueService {
 
@@ -17,5 +18,11 @@ public interface IssueService {
 
     @POST("issue/save")
     Call<Void> save(@Body ReportIssueRequest request);
+
+    @POST("issue/upvote")
+    Call<Void> upvote(@Query("id") String id);
+
+    @POST("issue/downVote")
+    Call<Void> downVote(@Query("id") String id);
 
 }

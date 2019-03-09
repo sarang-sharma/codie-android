@@ -3,6 +3,9 @@ package org.codiecon.reportit.adapters;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,8 +18,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.codiecon.reportit.ConnectionManager;
 import org.codiecon.reportit.R;
 import org.codiecon.reportit.models.ReportedIssue;
+import org.codiecon.reportit.outbound.IssueService;
 
 import java.util.List;
 
@@ -65,8 +70,48 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
 
                 }
             });
-            sliderDots(0, holder.slider_dots, this.issues.size());
+            sliderDots(0, holder.slider_dots, issue.getImages().size());
         }
+
+        holder.upVotes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ConnectionManager.instance()
+                    .create(IssueService.class)
+                    .upvote(issue.getDescription()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        holder.downVotes.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                ConnectionManager.instance()
+                    .create(IssueService.class)
+                    .downVote(issue.getDescription()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
 
     }
 
