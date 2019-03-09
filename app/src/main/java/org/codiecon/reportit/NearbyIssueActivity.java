@@ -1,6 +1,7 @@
 package org.codiecon.reportit;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.models.ReportedIssue;
@@ -59,7 +60,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<ReportedIssueResponse>> call, Throwable t) {
-
+                Log.e( "jkfsadkjf", t.toString());
             }
         });
     }
