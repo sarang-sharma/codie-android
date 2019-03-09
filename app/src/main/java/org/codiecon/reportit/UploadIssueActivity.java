@@ -27,8 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.request.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -69,8 +71,9 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
     private LocationManager locationManager;
     private double latitute,logitude;
     private static final int STORAGE_PERMISSION_CODE = 123;
-    private String locationUpdate;
+    private String locationUpdate,userid;
     ArrayList<String> fileNames = new ArrayList<>();
+    RequestQueue requestQueue;
 
 
 
@@ -87,6 +90,9 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         Descreption = findViewById(R.id.description);
         Save= (Button) findViewById(R.id.save);
         Error = (TextView) findViewById(R.id.error);
+        userid = SharedPrefManager.getInstance(this).getUserID();
+        requestQueue = Volley.newRequestQueue(this);
+
         Tag = findViewById(R.id.url);
         setSupportActionBar(toolbar);
       //  fileNames = getIntent().getStringArrayListExtra("images");
@@ -124,25 +130,26 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
             title = Title.getText().toString();
             descreption = Descreption.getText().toString();
             tag = Tag.getText().toString();
-//
-//            if (title == null || title.isEmpty()) {
-//                Error.setText(Title.getHint() + " cannot be empty");
-//                return;
-//            } else {
-//                Error.setText("");
-//            }
-//
-//            if (descreption == null || descreption.isEmpty()) {
-//                Error.setText(Descreption.getHint() + " cannot be empty");
-//                return;
-//            } else {
-//                Error.setText("");
-//            }
+
+            if (title == null || title.isEmpty()) {
+                Error.setText(Title.getHint() + " cannot be empty");
+                return;
+            } else {
+                Error.setText("");
+            }
+
+            if (descreption == null || descreption.isEmpty()) {
+                Error.setText(Descreption.getHint() + " cannot be empty");
+                return;
+            } else {
+                Error.setText("");
+            }
             if(locationUpdate == null) {
                 requestStoragePermission();
                 // getLocation();
             }else {
                 getLocation();
+                Save();
             }
 
             Log.d("think","oe");
@@ -152,6 +159,58 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+
+
+
+
+
+    private void Save() {
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("title", title);
+        params.put("description", descreption);
+        params.put("category", tag);
+        params.put("latitude", latitute);
+        params.put("longitude", logitude);
+        params.put("userid", userid);
+
+        JSONObject s= new JSONObject(params);
+        Log.d("ss",s+"");
+
+
+
+        JsonObjectRequest request_json = new JsonObjectRequest("http://e4e4bb84.ngrok.io/backend/user/signup", new JSONObject(params),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Log.d("response", response+"");
+
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(com.android.volley.error.VolleyError error) {
+                if(error.getMessage()==null) {
+                    // Toast.makeText(getApplicationContext(), "Server down try after some time", Toast.LENGTH_LONG).show();
+                    Error.setText("No Internet Connection Or Some Network Issue");
+                }else {
+                    // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    Error.setText("No Internet Connection Or Some Network Issue");
+                }
+            }
+
+        });
+
+
+
+        requestQueue.add(request_json);
+
+    }
 
 
 

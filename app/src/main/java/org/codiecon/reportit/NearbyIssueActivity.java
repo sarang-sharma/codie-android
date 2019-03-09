@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.auth.SharedPrefManager;
@@ -62,7 +63,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
     private static final int STORAGE_PERMISSION_CODE = 456;
     private int PICK_IMAGE_REQUEST = 1;
     private Uri filePath;
-    private String path, filesize, mediaUpdate;
+    private String path, filesize, mediaUpdate,refreshedToken;
     private int FileSizeCheck;
     String imageEncoded;
     List<String> imagesEncodedList;
@@ -110,6 +111,9 @@ public class NearbyIssueActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.main_layout);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("re",refreshedToken);
+
 
         ConnectionManager.instance()
             .create(IssueService.class)
@@ -294,6 +298,11 @@ public class NearbyIssueActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         }
+
+        Intent intent = new Intent(getApplicationContext(),UploadIssueActivity.class);
+        //intent.putStringArrayListExtra("images",fileNames);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
 
 
