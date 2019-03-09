@@ -25,7 +25,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.codiecon.reportit.auth.SharedPrefManager;
 import org.codiecon.reportit.constant.SystemConstant;
 import org.json.JSONObject;
@@ -55,8 +54,9 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
     private double latitude, longitude;
     private static final int STORAGE_PERMISSION_CODE = 123;
     private String locationUpdate;
-    RequestQueue requestQueue;
     private ProgressDialog waitDialog;
+    private String userid;
+    RequestQueue requestQueue;
 
     ArrayList<String> images = new ArrayList<>();
 
@@ -69,6 +69,9 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         Descreption = findViewById(R.id.description);
         Save = (Button) findViewById(R.id.save);
         Error = (TextView) findViewById(R.id.error);
+        userid = SharedPrefManager.getInstance(this).getUserID();
+        requestQueue = Volley.newRequestQueue(this);
+
         Tag = findViewById(R.id.url);
         setSupportActionBar(toolbar);
         images = getIntent().getStringArrayListExtra("images");
@@ -121,7 +124,6 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
             } else {
                 Error.setText("");
             }
-
             if (locationUpdate == null) {
                 requestStoragePermission();
                 // getLocation();
@@ -135,7 +137,7 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
 
     private void registerUser() {
         HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("userId", "");
+        params.put("userId", userid);
         params.put("title", title);
         params.put("category", tag);
         params.put("description", description);
@@ -179,7 +181,6 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         });
         requestQueue.add(request_json);
     }
-
 
     private void requestStoragePermission() {
         Log.d("radhe", "method");

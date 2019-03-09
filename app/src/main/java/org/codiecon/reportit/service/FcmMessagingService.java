@@ -67,9 +67,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
 
             if (SharedPrefManager.getInstance(this).isLoggedIn()) {
                 Intent intent = new Intent(click_action);
-                intent.putExtra("id", 0 + "");
-                intent.putExtra("offset", 0 + "");
-                intent.putExtra("feedName", "Feed Name");
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 try {
@@ -120,13 +117,17 @@ public class FcmMessagingService extends FirebaseMessagingService {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-                        NotificationChannel channel = new NotificationChannel("com.fmp.findmyproperty", "androidfcm1", NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationChannel channel = new NotificationChannel("org.codiecon.reportit","androidfcm1", NotificationManager.IMPORTANCE_DEFAULT);
+
                         NotificationManager manager = getSystemService(NotificationManager.class);
                         manager.createNotificationChannel(channel);
                     }
 
 
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "com.fmp.findmyproperty");
+
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"org.codiecon.reportit");
+
                     builder.setCustomBigContentView(contentView);
                     // builder.setContent(contentView);
                     builder.setContentTitle(title);
