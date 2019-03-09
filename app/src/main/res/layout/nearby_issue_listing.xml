@@ -16,6 +16,7 @@
         app:theme="@style/ThemeOverlay.AppCompat"
         />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/parent_recycler_view"
         android:scrollbars="vertical"

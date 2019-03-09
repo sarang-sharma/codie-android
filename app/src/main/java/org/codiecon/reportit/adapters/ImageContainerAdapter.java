@@ -21,9 +21,9 @@ public class ImageContainerAdapter extends PagerAdapter {
     private Activity activity;
     private LayoutInflater layoutInflater;
 
-    private List<Integer> images;
+    private List<String> images;
 
-    public ImageContainerAdapter(Activity activity, List<Integer> images){
+    public ImageContainerAdapter(Activity activity, List<String> images){
         this.activity = activity;
         this.images = images;
     }

@@ -24,6 +24,8 @@ import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.auth.SharedPrefManager;
 import org.codiecon.reportit.helper.FileUtils;
 import org.codiecon.reportit.models.ReportedIssue;
+import org.codiecon.reportit.models.response.ReportedIssueResponse;
+import org.codiecon.reportit.outbound.IssueService;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +41,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import id.zelory.compressor.Compressor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NearbyIssueActivity extends AppCompatActivity {
 
@@ -99,8 +104,34 @@ public class NearbyIssueActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ReportedIssueAdapter(this, populate());
-        recyclerView.setAdapter(adapter);
+        ConnectionManager.instance()
+            .create(IssueService.class)
+            .getAll(0, 10).enqueue(new Callback<List<ReportedIssueResponse>>() {
+
+            @Override
+            public void onResponse(Call<List<ReportedIssueResponse>> call, Response<List<ReportedIssueResponse>> response) {
+                List<ReportedIssue> issues = new ArrayList<>();
+                if(response != null && response.body() != null){
+                    for(ReportedIssueResponse item : response.body()){
+                        ReportedIssue issue = new ReportedIssue();
+                        issue.setTitle(item.getTitle());
+                        issue.setDescription(item.getDescription());
+                        issue.setLocation(item.getAddress());
+                        issue.setImages(new ArrayList<>(item.getImages()));
+                        issue.setReporter(item.getCreatedBy());
+                        issue.setVotes(item.getVotes());
+                        issues.add(issue);
+                    }
+                }
+                adapter = new ReportedIssueAdapter(NearbyIssueActivity.this, issues);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<ReportedIssueResponse>> call, Throwable t) {
+
+            }
+        });
     }
 
 
