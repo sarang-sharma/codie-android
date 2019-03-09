@@ -26,5 +26,7 @@
     <color name="bg">#b0232e</color>
     <color name="bg1">#f1f1f1</color>
     <color name="grey_300">#8D9496</color>
+    <color name="login_button">#D7D2EC</color>
+    <color name="back_ground">#8175b5</color>
     <color name="button_pressed">#f1f1f1</color>
 </resources>
