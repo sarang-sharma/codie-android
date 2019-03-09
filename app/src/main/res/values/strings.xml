@@ -1,0 +1,22 @@
+<resources>
+    <string name="application">ReportIT</string>
+    <string name="title_activity_login">Sign in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_username">Email or Mobile Number</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Log In</string>
+    <string name="action_sign_with_facebook">Sign In with Facebook</string>
+    <string name="error_incorrect_credentials">username or password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="title_activity_footer">footer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_list_issue">listIssue</string>
+    <string name="title_activity_reported_issue">ReportedIssueActivity</string>
+</resources>
