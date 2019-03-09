@@ -6,6 +6,7 @@ import android.util.Log;
 import org.codiecon.reportit.adapters.ReportedIssueAdapter;
 import org.codiecon.reportit.models.ReportedIssue;
 import org.codiecon.reportit.models.response.ReportedIssueResponse;
+import org.codiecon.reportit.models.response.Wrapper;
 import org.codiecon.reportit.outbound.IssueService;
 
 import java.util.ArrayList;
@@ -37,13 +38,13 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
         ConnectionManager.instance()
             .create(IssueService.class)
-            .getAll(0, 10).enqueue(new Callback<List<ReportedIssueResponse>>() {
+            .getAll(0, 10).enqueue(new Callback<Wrapper<List<ReportedIssueResponse>>>(){
 
             @Override
-            public void onResponse(Call<List<ReportedIssueResponse>> call, Response<List<ReportedIssueResponse>> response) {
+            public void onResponse(Call<Wrapper<List<ReportedIssueResponse>>> call, Response<Wrapper<List<ReportedIssueResponse>>> response) {
                 List<ReportedIssue> issues = new ArrayList<>();
                 if(response != null && response.body() != null){
-                    for(ReportedIssueResponse item : response.body()){
+                    for(ReportedIssueResponse item : response.body().getContent()){
                         ReportedIssue issue = new ReportedIssue();
                         issue.setTitle(item.getTitle());
                         issue.setDescription(item.getDescription());
@@ -59,7 +60,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<ReportedIssueResponse>> call, Throwable t) {
+            public void onFailure(Call<Wrapper<List<ReportedIssueResponse>>> call, Throwable t) {
                 Log.e( "jkfsadkjf", t.toString());
             }
         });

@@ -2,6 +2,7 @@ package org.codiecon.reportit.outbound;
 
 import org.codiecon.reportit.models.request.ReportIssueRequest;
 import org.codiecon.reportit.models.response.ReportedIssueResponse;
+import org.codiecon.reportit.models.response.Wrapper;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import retrofit2.http.Query;
 public interface IssueService {
 
     @GET("issue/getAll")
-    Call<List<ReportedIssueResponse>> getAll(@Query("page") Integer page, @Query("size") Integer size);
+    Call<Wrapper<List<ReportedIssueResponse>>> getAll(@Query("page") Integer page, @Query("size") Integer size);
 
     @POST("issue/save")
     Call<Void> save(@Body ReportIssueRequest request);
