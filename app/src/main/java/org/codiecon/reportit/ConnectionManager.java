@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ConnectionManager extends Application {
 
-    private static final String BASE_URI = "http://8d67081e.ngrok.io/backend";
+    private static final String BASE_URI = "http://e4e4bb84.ngrok.io/backend/";
 
     private static ConnectionManager manager;
 

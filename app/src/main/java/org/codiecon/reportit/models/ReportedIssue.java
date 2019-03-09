@@ -10,11 +10,13 @@ public class ReportedIssue {
 
     private List<String> tags;
 
-    private List<Integer> images;
+    private List<String> images;
 
     private String location;
 
     private String reporter;
+
+    private long votes;
 
     public String getTitle() {
         return title;
@@ -40,11 +42,11 @@ public class ReportedIssue {
         this.tags = tags;
     }
 
-    public List<Integer> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(List<Integer> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
@@ -62,5 +64,13 @@ public class ReportedIssue {
 
     public void setReporter(String reporter) {
         this.reporter = reporter;
+    }
+
+    public long getVotes() {
+        return votes;
+    }
+
+    public void setVotes(long votes) {
+        this.votes = votes;
     }
 }

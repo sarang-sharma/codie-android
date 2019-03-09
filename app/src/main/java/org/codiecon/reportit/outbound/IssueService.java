@@ -19,10 +19,10 @@ public interface IssueService {
     @POST("issue/save")
     Call<Void> save(@Body ReportIssueRequest request);
 
-    @POST("issue/upvote")
+    @GET("issue/upvote")
     Call<Void> upvote(@Query("id") String id);
 
-    @POST("issue/downVote")
+    @GET("issue/downVote")
     Call<Void> downVote(@Query("id") String id);
 
 }

@@ -125,8 +125,8 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
         TextView location;
         ImageView reporter;
         ViewPager viewPager;
-        TextView upVotes;
-        TextView downVotes;
+        ImageView upVotes;
+        ImageView downVotes;
         LinearLayout slider_dots;
 
         public IssueHolder(View view) {
@@ -135,6 +135,8 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             this.reporter = view.findViewById(R.id.reporter);
             this.location = view.findViewById(R.id.issue_location);
             this.slider_dots = view.findViewById(R.id.slider_dots);
+            this.upVotes = view.findViewById(R.id.iv_like);
+            this.downVotes = view.findViewById(R.id.iv_unlike);
             this.viewPager = view.findViewById(R.id.image_container);
         }
     }
