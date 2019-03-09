@@ -33,7 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button signIn;
     private EditText Email,Password;
-    private String email,password,emailcheck,userid,Name;
+    private String email,password,getEmail,userid,Name;
     private TextView ForgotPass,Error,signUp;
     private WeakReference<Context> cReference,aReference;
     private ProgressDialog waitDialog;
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d("some","this clicked");
             finish();
             startActivity(new Intent(cReference.get(),NearbyIssueActivity.class));
-            overridePendingTransition(0,0);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             return;
         }
 
@@ -86,12 +86,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Error.setText("");
             }
 
-            if (!validateEmail(email)) {
+            /*if (!validateEmail(email)) {
                 Error.setText("Invalid email addresss");
                 return;
             } else {
                 Error.setText("");
-            }
+            }*/
 
             password = Password.getText().toString();
             if (password == null || password.isEmpty()) {
@@ -174,32 +174,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void userLogin() {
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("email", email);
+        params.put("username", email);
         params.put("password", password);
 
 
-        JsonObjectRequest request_json = new JsonObjectRequest("http://e4e4bb84.ngrok.io/backend/user/login", new JSONObject(params),
+        JsonObjectRequest request_json = new JsonObjectRequest("http://192.168.1.5:8080/backend/user/login", new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
-
+                            waitDialog.dismiss();
                             Log.d("login",response+"");
-
-
-                            userid = response.getString("userId");
-
-                         if(userid==null && !userid.isEmpty() )
-                         {
-                             SharedPrefManager.getInstance(cReference.get())
-                                     .userID(
-                                             userid
-
-                                     );
-                         }else {
-                             Error.setText("response not good");
-                         }
+                            if(response.getString("userId") != null) {
+                                userid = response.getString("userId");
+                                SharedPrefManager.getInstance(cReference.get()).userID(userid);
+                                startActivity(new Intent(cReference.get(),NearbyIssueActivity.class));
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            }else {
+                                Error.setText("Invalid Credentials");
+                            }
 
                          //Process os success response
                         } catch (Exception e) {
@@ -214,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Error.setText("No Internet Connection Or Some Network Issue");
                 }else {
                     waitDialog.dismiss();
-                    Error.setText("No Internet Connection Or Some Network Issue");
+                    Error.setText(error.getMessage());
                 }
             }
 

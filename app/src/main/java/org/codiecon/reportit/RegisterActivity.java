@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.request.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.codiecon.reportit.auth.SharedPrefManager;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ import androidx.core.content.ContextCompat;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
     private Button SignUp;
     private EditText Username,Email,Password,Phone;
-    private String username,email,password,phone;
+    private String username,email,password,phone,refreshedToken;
     private TextView Login,Error;
     private WeakReference<Context> cReference;
     private ProgressDialog waitDialog;
@@ -65,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         cReference = new WeakReference<Context>(RegisterActivity.this);
         requestQueue = Volley.newRequestQueue(cReference.get());
         locationUpdate = SharedPrefManager.getInstance(cReference.get()).getUserLocation();
+        refreshedToken = FirebaseInstanceId.getInstance().getToken();
         if(locationUpdate == null) {
             requestStoragePermission();
             // getLocation();
@@ -151,6 +153,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             if(haveNetwork())
             {
+
+                if (refreshedToken == null) {
+                    refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                } else {
+                    Log.d("refresh", refreshedToken);
+
+                }
                 waitDialog.setMessage("Signing up...");
                 waitDialog.show();
                 RegisterUser();
@@ -199,6 +208,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         params.put("password", password);
         params.put("phoneNo", phone);
         params.put("location", LocalityName);
+        params.put("fcm_token", refreshedToken);
 
         JSONObject s= new JSONObject(params);
         Log.d("ss",s+"");
@@ -210,15 +220,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            waitDialog.dismiss();
                             Log.d("response", response+"");
-                            String email= response.getString("email");
-                            if(!email.isEmpty())
+                            if(response.getString("email") != null)
                             {
-                                waitDialog.dismiss();
+
                                 Intent intent1=new Intent(RegisterActivity.this,LoginActivity.class);
                                 startActivity(intent1);
                             }else {
-                                waitDialog.dismiss();
+
                                 Error.setText("username or password wrong");
                             }
 
