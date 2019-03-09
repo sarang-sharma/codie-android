@@ -21,9 +21,9 @@ public interface IssueService {
     Call<Void> save(@Body ReportIssueRequest request);
 
     @GET("issue/upvote")
-    Call<Void> upvote(@Query("id") String id);
+    Call<Long> upvote(@Query("id") String id);
 
-    @GET("issue/downVote")
-    Call<Void> downVote(@Query("id") String id);
+    @GET("issue/downvote")
+    Call<Long> downVote(@Query("id") String id);
 
 }
