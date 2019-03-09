@@ -4,6 +4,8 @@ import java.util.List;
 
 public class ReportedIssue {
 
+    private String id;
+
     private String title;
 
     private String description;
@@ -72,5 +74,13 @@ public class ReportedIssue {
 
     public void setVotes(long votes) {
         this.votes = votes;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
