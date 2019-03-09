@@ -194,37 +194,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void RegisterUser() {
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("Email", email);
-        params.put("Name", username);
-        params.put("Password", password);
-        params.put("Mobile", phone);
+        params.put("email", email);
+        params.put("username", username);
+        params.put("password", password);
+        params.put("phoneNo", phone);
+        params.put("location", LocalityName);
 
         JSONObject s= new JSONObject(params);
         Log.d("ss",s+"");
 
 
 
-        JsonObjectRequest request_json = new JsonObjectRequest("https://fmp.dhusariyainfotech.com/api/registration", new JSONObject(params),
+        JsonObjectRequest request_json = new JsonObjectRequest("http://e4e4bb84.ngrok.io/backend/user/signup", new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             Log.d("response", response+"");
-                            int success= response.getInt("ReturnCode");
-                            String message= response.getString("ReturnMessage");
-
-
-
-                            if(success == 1)
+                            String email= response.getString("email");
+                            if(!email.isEmpty())
                             {
                                 waitDialog.dismiss();
-                                Log.d("response", message);
-                                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                                Intent intent1=new Intent(RegisterActivity.this,LoginActivity.class);
+                                startActivity(intent1);
                             }else {
                                 waitDialog.dismiss();
-                                Error.setText(message);
-                                Log.d("response",message);
+                                Error.setText("username or password wrong");
                             }
+
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -348,8 +346,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Geocoder geocoder = new Geocoder(cReference.get(), Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses.size() > 0) {
-                LocalityName = addresses.get(0).getLocality();
-                Log.d("locality name",LocalityName);
+                LocalityName = addresses.get(0).getAddressLine(0);
+                Log.d("locality name",addresses.get(0).getAddressLine(0)+"");
                 System.out.println(addresses.get(0).getLocality());
             }
             else {

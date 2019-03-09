@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.request.JsonObjectRequest;
+import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -173,69 +174,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void userLogin() {
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("Email", email);
-        params.put("Password", password);
+        params.put("email", email);
+        params.put("password", password);
 
 
-
-        JsonObjectRequest request_json = new JsonObjectRequest("https://fmp.dhusariyainfotech.com/api/login", new JSONObject(params),
+        JsonObjectRequest request_json = new JsonObjectRequest("http://e4e4bb84.ngrok.io/backend/user/login", new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
 
+
                             Log.d("login",response+"");
-                            int success= response.getInt("ReturnCode");
-                            String message= response.getString("ReturnMessage");
 
 
-                            if(success == 1)
-                            {
-                                JSONArray ReturnData=response.getJSONArray("ReturnData");
+                            userid = response.getString("userId");
 
-                                for (int i=0;i<ReturnData.length();i++) {
+                         if(userid==null && !userid.isEmpty() )
+                         {
+                             SharedPrefManager.getInstance(cReference.get())
+                                     .userID(
+                                             userid
 
-                                    JSONObject jsonObject4 = ReturnData.getJSONObject(i);
-                                    id=jsonObject4.getInt("Id");
-                                    emailcheck=jsonObject4.getString("Email");
-                                    Name=jsonObject4.getString("Name");
-                                    Log.d("useridddd",id+"");
-                                }
+                                     );
+                         }else {
+                             Error.setText("response not good");
+                         }
 
-
-                                userid = id + "";
-                                SharedPrefManager.getInstance(cReference.get())
-                                        .userLogIn(
-                                                emailcheck
-
-                                        );
-
-                                SharedPrefManager.getInstance(cReference.get())
-                                        .userID(
-                                                userid
-
-                                        );
-
-                                SharedPrefManager.getInstance(cReference.get())
-                                        .userName(
-                                                Name
-                                        );
-
-
-                                waitDialog.dismiss();
-                                Intent nearby=new Intent(LoginActivity.this,NearbyIssueActivity.class);
-                                startActivity(nearby);
-                                //overridePendingTransition(R.id.);
-
-
-                            }else {
-                                Log.d("rse","Login Failed");
-                                waitDialog.dismiss();
-                                Error.setText("username or password wrong");
-                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                            }
-
-                            //Process os success response
+                         //Process os success response
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

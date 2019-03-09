@@ -157,7 +157,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
                 }
 
             }else{
-                click_action="com.fmp.findmyproperty.TARGET_LOGIN";
+                click_action="org.codiecon.reportit.TARGET_LOGIN";
                 Intent intent1 = new Intent(click_action);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
