@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.request.JsonObjectRequest;
@@ -22,8 +23,10 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.codiecon.reportit.auth.SharedPrefManager;
+import org.codiecon.reportit.constant.SystemConstant;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
@@ -32,13 +35,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button signIn;
-    private EditText Email,Password;
-    private String email,password,getEmail,userid,Name;
-    private TextView ForgotPass,Error,signUp;
-    private WeakReference<Context> cReference,aReference;
+    private EditText Email, Password;
+    private String email, password, getEmail, userid, Name;
+    private TextView ForgotPass, Error, signUp;
+    private WeakReference<Context> cReference, aReference;
     private ProgressDialog waitDialog;
     private RelativeLayout coordinatorLayout;
-    private int id,guestid;
+    private int id, guestid;
     RequestQueue requestQueue;
     ConnectivityManager connectivityManager;
 
@@ -51,9 +54,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         aReference = new WeakReference<Context>(getApplicationContext());
         requestQueue = Volley.newRequestQueue(cReference.get());
         if (SharedPrefManager.getInstance(cReference.get()).isLoggedIn()) {
-            Log.d("some","this clicked");
+            Log.d("some", "this clicked");
             finish();
-            startActivity(new Intent(cReference.get(),NearbyIssueActivity.class));
+            startActivity(new Intent(cReference.get(), NearbyIssueActivity.class));
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             return;
         }
@@ -64,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Email = findViewById(R.id.userName);
         Password = findViewById(R.id.passWord);
         Error = findViewById(R.id.error);
-        coordinatorLayout =  findViewById(R.id.coordinatorLayout);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
         signIn.setOnClickListener(this);
         signUp.setOnClickListener(this);
         waitDialog = new ProgressDialog(this);
@@ -75,8 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        if(v.getId()==R.id.SignIn)
-        {
+        if (v.getId() == R.id.SignIn) {
 
             email = Email.getText().toString();
             if (email == null || email.isEmpty()) {
@@ -102,20 +104,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
 
 
-            if(haveNetwork())
-            {
+            if (haveNetwork()) {
                 waitDialog.setMessage("Signing in...");
                 waitDialog.show();
                 userLogin();
-            }else if(!haveNetwork())
-            {
+            } else if (!haveNetwork()) {
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, "Internet not available", Snackbar.LENGTH_LONG);
                 snackbar.setDuration(5000).show();
             }
-        }
-        else if(v.getId() == R.id.SignUp)
-        {
-            Intent intent = new Intent(this,RegisterActivity.class);
+        } else if (v.getId() == R.id.SignUp) {
+            Intent intent = new Intent(this, RegisterActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -137,21 +135,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private boolean haveNetwork(){
-        boolean have_WIFI=false;
-        boolean have_MOBILE_DATA= false;
+    private boolean haveNetwork() {
+        boolean have_WIFI = false;
+        boolean have_MOBILE_DATA = false;
 
         connectivityManager = (ConnectivityManager) cReference.get().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] networkInfos= connectivityManager.getAllNetworkInfo();
+        NetworkInfo[] networkInfos = connectivityManager.getAllNetworkInfo();
 
 
-        for(NetworkInfo info:networkInfos)
-        {
-            if(info.getTypeName().equalsIgnoreCase("WIFI"))
-                if(info.isConnected())
+        for (NetworkInfo info : networkInfos) {
+            if (info.getTypeName().equalsIgnoreCase("WIFI"))
+                if (info.isConnected())
                     have_WIFI = true;
-            if(info.getTypeName().equalsIgnoreCase("MOBILE"))
-                if(info.isConnected())
+            if (info.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (info.isConnected())
                     have_MOBILE_DATA = true;
         }
         return have_MOBILE_DATA || have_WIFI;
@@ -169,59 +166,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-
     private void userLogin() {
-
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", email);
         params.put("password", password);
 
-
-        JsonObjectRequest request_json = new JsonObjectRequest("http://192.168.1.5:8080/backend/user/login", new JSONObject(params),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            waitDialog.dismiss();
-                            Log.d("login",response+"");
-                            if(response.getString("userId") != null) {
-                                userid = response.getString("userId");
-                                SharedPrefManager.getInstance(cReference.get()).userID(userid);
-                                startActivity(new Intent(cReference.get(),NearbyIssueActivity.class));
-                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                            }else {
-                                Error.setText("Invalid Credentials");
-                            }
-
-                         //Process os success response
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        JsonObjectRequest request_json = new JsonObjectRequest(SystemConstant.URI + "user/login", new JSONObject(params),
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        waitDialog.dismiss();
+                        Log.d("login", response + "");
+                        if (response.getString("userId") != null) {
+                            userid = response.getString("userId");
+                            SharedPrefManager.getInstance(cReference.get()).userID(userid);
+                            startActivity(new Intent(cReference.get(), NearbyIssueActivity.class));
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        } else {
+                            Error.setText("Invalid Credentials");
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+                }
+            }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(com.android.volley.error.VolleyError error) {
-                if(error.getMessage()==null) {
+                if (error.getMessage() == null) {
                     waitDialog.dismiss();
                     Error.setText("No Internet Connection Or Some Network Issue");
-                }else {
+                } else {
                     waitDialog.dismiss();
                     Error.setText(error.getMessage());
                 }
             }
 
         });
-
-
         //request_json.setTag(LoginActivity.class);
         requestQueue.add(request_json);
-
     }
-
-
-
-
-
 
 }
