@@ -2,13 +2,14 @@ package org.codiecon.reportit.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
-
+import com.bumptech.glide.Glide;
 import org.codiecon.reportit.R;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class ImageContainerAdapter extends PagerAdapter {
     private Activity activity;
     private LayoutInflater layoutInflater;
 
-    private List<String> images;
+    private List<byte[]> images;
 
-    public ImageContainerAdapter(Activity activity, List<String> images){
+    public ImageContainerAdapter(Activity activity, List<byte[]> images){
         this.activity = activity;
         this.images = images;
     }
@@ -44,7 +45,7 @@ public class ImageContainerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.image_slider, container, false);
         ImageView im_slider = (ImageView) view.findViewById(R.id.image_slider);
-        Picasso.with(activity.getApplicationContext())
+        Glide.with(activity.getApplicationContext())
             .load(images.get(position))
             .placeholder(R.mipmap.ic_launcher)
             .error(R.mipmap.ic_launcher)

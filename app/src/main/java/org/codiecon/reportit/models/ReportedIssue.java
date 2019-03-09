@@ -10,7 +10,7 @@ public class ReportedIssue {
 
     private List<String> tags;
 
-    private List<String> images;
+    private List<byte[]> images;
 
     private String location;
 
@@ -42,11 +42,11 @@ public class ReportedIssue {
         this.tags = tags;
     }
 
-    public List<String> getImages() {
+    public List<byte[]> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<byte[]> images) {
         this.images = images;
     }
 
