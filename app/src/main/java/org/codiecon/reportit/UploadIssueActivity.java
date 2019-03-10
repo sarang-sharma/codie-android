@@ -77,6 +77,11 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         images = getIntent().getStringArrayListExtra("images");
         labels = getIntent().getStringArrayListExtra("labels");
 
+
+        setSupportActionBar(toolbar);
+        images = getIntent().getStringArrayListExtra("images");
+        labels = getIntent().getStringArrayListExtra("labels");
+
         StringBuilder builder = new StringBuilder();
         for(String label : labels){
             builder.append(label).append(", ");

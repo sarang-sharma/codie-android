@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#775EE4</color>
     <color name="colorPrimaryDark">#FF6648E7</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="Toolbar">#D81B60</color>
+    <color name="colorAccent">#FF6648E7</color>
+    <color name="Toolbar">#775EE4</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
