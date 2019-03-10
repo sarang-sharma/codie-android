@@ -81,7 +81,7 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolbar);
         images = getIntent().getStringArrayListExtra("images");
         labels = getIntent().getStringArrayListExtra("labels");
-        Toast.makeText(this, "System detected labels " + builder.toString().substring(0, builder.toString().length() - 1),
+        Toast.makeText(UploadIssueActivity.this, "System detected labels " + builder.toString(),
             Toast.LENGTH_LONG).show();
         //onBackPressed();
         locationUpdate = SharedPrefManager.getInstance(this).getUserLocation();

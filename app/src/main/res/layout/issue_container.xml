@@ -21,7 +21,7 @@
                 android:id="@+id/reporter"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/character" />
+                android:src="@drawable/profile" />
 
             <LinearLayout
                 android:id="@+id/details"

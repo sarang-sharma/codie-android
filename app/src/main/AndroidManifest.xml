@@ -29,7 +29,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NearbyIssueActivity" >
+        <activity android:name=".NearbyIssueActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="org.codiecon.reportit.TARGET_NOTIFICATION"/>
                 <category android:name="android.intent.category.DEFAULT" />

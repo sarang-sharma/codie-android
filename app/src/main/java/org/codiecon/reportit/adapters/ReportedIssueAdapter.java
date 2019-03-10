@@ -58,7 +58,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             holder.location.setText(issue.getLocation());
             holder.viewPager.setAdapter(imageContainer);
             holder.counter.setText(convertToText(issue.getVotes()));
-            holder.reporter.setImageResource(R.drawable.character);
+            holder.reporter.setImageResource(R.drawable.profile);
 
             holder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -169,7 +169,7 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
             slider_dots.addView(dots[i]);
         }
 
-        if (dots.length > 0) {
+        if (dots.length > 0 && currentPage < dots.length) {
             dots[currentPage].setTextColor(Color.parseColor("#A2A2A2"));
         }
     }

@@ -283,12 +283,16 @@ public class NearbyIssueActivity extends AppCompatActivity {
                         ArrayList<String> images = new ArrayList<>();
                         ArrayList<String> labels = new ArrayList<>();
                         String[] data = response.split("|");
-                        for(String url : data[0].split(",")){
-                            images.add(url);
+                        if(data.length > 0){
+                            for(String url : data[0].split(",")){
+                                images.add(url);
+                            }
                         }
 
-                        for(String label : data[1].split(",")){
-                            labels.add(label);
+                        if(data.length > 1){
+                            for(String label : data[1].split(",")){
+                                labels.add(label);
+                            }
                         }
                         intent.putStringArrayListExtra("images", images);
                         intent.putStringArrayListExtra("labels", labels);
