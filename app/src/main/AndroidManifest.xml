@@ -29,11 +29,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NearbyIssueActivity" />
+        <activity android:name=".NearbyIssueActivity" >
+            <intent-filter>
+                <action android:name="org.codiecon.reportit.TARGET_NOTIFICATION"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".UploadIssueActivity"></activity>
 
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity">
+            <intent-filter>
+                <action android:name="org.codiecon.reportit.TARGET_LOGIN"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".service.FcmInstanceIdService"
