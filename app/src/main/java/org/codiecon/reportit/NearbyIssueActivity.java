@@ -282,13 +282,12 @@ public class NearbyIssueActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), UploadIssueActivity.class);
                         ArrayList<String> images = new ArrayList<>();
                         ArrayList<String> labels = new ArrayList<>();
-                        String[] data = response.split("|");
+                        String[] data = response.split("\\|");
                         if(data.length > 0){
                             for(String url : data[0].split(",")){
                                 images.add(url);
                             }
                         }
-
                         if(data.length > 1){
                             for(String label : data[1].split(",")){
                                 labels.add(label);

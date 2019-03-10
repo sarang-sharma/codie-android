@@ -73,14 +73,14 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         userid = SharedPrefManager.getInstance(this).getUserID();
         requestQueue = Volley.newRequestQueue(this);
         tagView = findViewById(R.id.url);
+        setSupportActionBar(toolbar);
+        images = getIntent().getStringArrayListExtra("images");
+        labels = getIntent().getStringArrayListExtra("labels");
 
         StringBuilder builder = new StringBuilder();
         for(String label : labels){
             builder.append(label).append(", ");
         }
-        setSupportActionBar(toolbar);
-        images = getIntent().getStringArrayListExtra("images");
-        labels = getIntent().getStringArrayListExtra("labels");
         Toast.makeText(UploadIssueActivity.this, "System detected labels " + builder.toString(),
             Toast.LENGTH_LONG).show();
         //onBackPressed();
