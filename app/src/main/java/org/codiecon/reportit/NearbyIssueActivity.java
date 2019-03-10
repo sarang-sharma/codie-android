@@ -281,10 +281,17 @@ public class NearbyIssueActivity extends AppCompatActivity {
                     if (response != null) {
                         Intent intent = new Intent(getApplicationContext(), UploadIssueActivity.class);
                         ArrayList<String> images = new ArrayList<>();
-                        for(String url : response.split(",")){
+                        ArrayList<String> labels = new ArrayList<>();
+                        String[] data = response.split("|");
+                        for(String url : data[0].split(",")){
                             images.add(url);
                         }
+
+                        for(String label : data[1].split(",")){
+                            labels.add(label);
+                        }
                         intent.putStringArrayListExtra("images", images);
+                        intent.putStringArrayListExtra("labels", labels);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }

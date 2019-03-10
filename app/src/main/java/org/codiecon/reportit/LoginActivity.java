@@ -178,7 +178,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     try {
                         waitDialog.dismiss();
                         Log.d("login", response + "");
-                        if (response.getString("userId") != null) {
+                        if (response.getInt("statusCode") == 200) {
                             userid = response.getString("userId");
                             SharedPrefManager.getInstance(cReference.get()).userID(userid);
                             startActivity(new Intent(cReference.get(), NearbyIssueActivity.class));
@@ -187,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Error.setText("Invalid Credentials");
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Error.setText("Invalid Credentials");
                     }
                 }
             }, new Response.ErrorListener() {

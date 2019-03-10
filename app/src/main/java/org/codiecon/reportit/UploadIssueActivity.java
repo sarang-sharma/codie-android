@@ -48,7 +48,7 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
     private Button Save;
     private TextView Error;
     private Toolbar toolbar;
-    private EditText Title, Descreption, Tag;
+    private EditText Title, descriptionView, tagView;
     private String title, description, tag, address;
     private LocationManager locationManager;
     private double latitude, longitude;
@@ -59,6 +59,7 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
     RequestQueue requestQueue;
 
     ArrayList<String> images = new ArrayList<>();
+    ArrayList<String> labels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +67,22 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_upload_feed_ui);
         toolbar = findViewById(R.id.toolbar);
         Title = findViewById(R.id.title);
-        Descreption = findViewById(R.id.description);
+        descriptionView = findViewById(R.id.description);
         Save = (Button) findViewById(R.id.save);
         Error = (TextView) findViewById(R.id.error);
         userid = SharedPrefManager.getInstance(this).getUserID();
         requestQueue = Volley.newRequestQueue(this);
+        tagView = findViewById(R.id.url);
 
-        Tag = findViewById(R.id.url);
+        StringBuilder builder = new StringBuilder();
+        for(String label : labels){
+            builder.append(label).append(", ");
+        }
         setSupportActionBar(toolbar);
         images = getIntent().getStringArrayListExtra("images");
+        labels = getIntent().getStringArrayListExtra("labels");
+        Toast.makeText(this, "System detected labels " + builder.toString().substring(0, builder.toString().length() - 1),
+            Toast.LENGTH_LONG).show();
         //onBackPressed();
         locationUpdate = SharedPrefManager.getInstance(this).getUserLocation();
         if (locationUpdate == null) {
@@ -108,8 +116,8 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         if (v.getId() == R.id.save) {
             title = Title.getText().toString();
-            description = Descreption.getText().toString();
-            tag = Tag.getText().toString();
+            description = descriptionView.getText().toString();
+            tag = tagView.getText().toString();
 
             if (title == null || title.isEmpty()) {
                 Error.setText(Title.getHint() + " cannot be empty");
@@ -119,7 +127,7 @@ public class UploadIssueActivity extends AppCompatActivity implements View.OnCli
             }
 
             if (description == null || description.isEmpty()) {
-                Error.setText(Descreption.getHint() + " cannot be empty");
+                Error.setText(descriptionView.getHint() + " cannot be empty");
                 return;
             } else {
                 Error.setText("");
