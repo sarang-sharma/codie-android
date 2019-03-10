@@ -119,7 +119,7 @@ public class NearbyIssueActivity extends AppCompatActivity {
 
         ConnectionManager.instance()
             .create(IssueService.class)
-            .getAll(0, 10).enqueue(new Callback<Wrapper<List<ReportedIssueResponse>>>() {
+            .getAll(0, 100).enqueue(new Callback<Wrapper<List<ReportedIssueResponse>>>() {
 
             @Override
             public void onResponse(Call<Wrapper<List<ReportedIssueResponse>>> call, Response<Wrapper<List<ReportedIssueResponse>>> response) {
