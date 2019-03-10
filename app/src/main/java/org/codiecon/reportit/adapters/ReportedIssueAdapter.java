@@ -92,6 +92,8 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
                             holder.counter.setText(convertToText(response.body()));
                             holder.downVotes.setEnabled(true);
                             holder.upVotes.setEnabled(false);
+                            holder.upVotes.setImageResource(R.drawable.up_sel);
+                            holder.downVotes.setImageResource(R.drawable.down);
                         }
                     }
 
@@ -117,6 +119,8 @@ public class ReportedIssueAdapter extends RecyclerView.Adapter<ReportedIssueAdap
                             holder.counter.setText(convertToText(response.body()));
                             holder.downVotes.setEnabled(false);
                             holder.upVotes.setEnabled(true);
+                            holder.downVotes.setImageResource(R.drawable.down_sel);
+                            holder.upVotes.setImageResource(R.drawable.up);
                         }
                     }
 

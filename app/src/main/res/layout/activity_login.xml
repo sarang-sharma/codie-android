@@ -63,7 +63,7 @@
                 android:ems="10"
                 android:paddingStart="60dp"
                 android:inputType="textPersonName"
-                android:hint="Email"
+                android:hint="Username"
                 android:textColor="@color/white"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="36dp"

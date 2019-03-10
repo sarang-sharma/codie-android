@@ -116,7 +116,8 @@
                 android:layout_toStartOf="@+id/iv_unlike"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:src="@drawable/up" />
+                android:src="@drawable/up"
+                />
 
             <LinearLayout
                 android:id="@+id/slider_dots"
