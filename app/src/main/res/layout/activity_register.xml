@@ -97,7 +97,7 @@
           android:layout_height="50dp"
           android:ems="10"
           android:paddingStart="60dp"
-          android:inputType="textEmailAddress"
+          android:inputType="textPassword"
           android:hint="Password"
           android:layout_centerHorizontal="true"
           android:layout_below="@+id/email"
