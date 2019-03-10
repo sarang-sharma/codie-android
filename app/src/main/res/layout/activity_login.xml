@@ -22,9 +22,9 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:scaleType="centerCrop"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/logo"
                 android:contentDescription="@string/desc"
                 android:layout_marginStart="30dp"
